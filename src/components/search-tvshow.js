@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Grid, Row, Cell } from 'react-inline-grid'
 import TextField from 'material-ui/TextField';
 import {orange500, blue500} from 'material-ui/styles/colors';
-import { searchTvShow } from '../actions/index';
 import TvShowComponent from './tvshow_component';
+import { store } from '../index';
 
 const LABEL_TEXT = "Search for a tvshow";
 
@@ -39,7 +39,7 @@ class SearchTvShow extends Component{
     onInputChanged(event, newValue){
         this.setState({ term: newValue });
         if(newValue.length > 3){
-            this.props.searchTvShow(newValue)
+            store.dispatch({ type: "SEARCH_TVSHOW_REQUESTED", searchTerm : newValue });
         }
     }
 
@@ -77,4 +77,4 @@ function mapStateToProps({ shows }){
     }
 }
 
-export default connect(mapStateToProps, { searchTvShow })(SearchTvShow)
+export default connect(mapStateToProps)(SearchTvShow)

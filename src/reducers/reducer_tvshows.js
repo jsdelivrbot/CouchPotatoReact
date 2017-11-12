@@ -1,4 +1,4 @@
-import { FETCH_SCHEDULE, FETCH_TVSHOW, FETCH_SEASONS, SELECT_SEASON, SEARCH_TVSHOW } from '../actions/index';
+import { TVSHOW_CONST as types } from '../constants/actionTypes/actiontypes';
 
 const INITIAL_STATE = {
     activeTvShow: null,
@@ -10,14 +10,14 @@ const INITIAL_STATE = {
 
 export default function(state = INITIAL_STATE, action){
     switch(action.type){
-        case FETCH_SCHEDULE:
+        case types.FETCH_SCHEDULE:
             if(state.selectedSeason !== null){
                 return Object.assign({}, state, { selectedSeason : null }, { activeSeason: null })
             }
             return { ...state, TvShows: action.payload.data };
-        case FETCH_TVSHOW:
+        case types.FETCH_TVSHOW:
             return { ...state, activeTvShow: action.payload.data };
-        case FETCH_SEASONS:
+        case types.FETCH_SEASONS:
             if(action.payload.data.length === 0)
                 return { ...state, seasons : {} };
 
@@ -36,10 +36,10 @@ export default function(state = INITIAL_STATE, action){
 
             return { ...state, seasons: newSeasons };
 
-        case SELECT_SEASON:
+        case types.SELECT_SEASON:
             const activeSeason = state.seasons[action.payload];
             return Object.assign({}, state, {selectedSeason: activeSeason})
-        case SEARCH_TVSHOW:
+        case types.SEARCH_TVSHOW:
             return { ...state, searchResult: action.payload.data }
         default:
             return state

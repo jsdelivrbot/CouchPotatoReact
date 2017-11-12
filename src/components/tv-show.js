@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { fetchTvShow, fetchSeasons, selectSeason } from '../actions/index';
 import { Card, CardActions, CardHeader, CardText, CardMedia, CardTitle } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import { Grid, Row, Cell } from 'react-inline-grid'
-import { DEFAULT_IMAGE } from '../constans.js'
+import { DEFAULT_IMAGE } from '../constants/constans.js'
 import EpisodeView from './episode-view';
 import _ from 'lodash';
+import { store } from '../index';
 
 const imageStyles = {
     height: '500px',
@@ -30,12 +30,12 @@ class TvShow extends Component{
     }
 
     componentWillMount(){
-        this.props.fetchTvShow(this.props.params.id);
-        this.props.fetchSeasons(this.props.params.id);
+        store.dispatch({ type: 'FETCH_TVSHOW_REQUESTED', id : this.props.params.id })
+        store.dispatch({ type: 'FETCH_SEASONS_REQUESTED',id : this.props.params.id })
     }
 
     updateSeasonChoice(id){
-        this.props.selectSeason(id)
+        store.dispatch({ type: 'SELECT_SEASON_REQUESTED', id })
     }
 
     renderSeasonButtons(){
@@ -48,7 +48,6 @@ class TvShow extends Component{
     }
 
     render(){
-        console.log(this.props);
         if(!this.props.shows.activeTvShow || !this.props.shows.seasons){
             return(
                 <div>
@@ -105,4 +104,4 @@ function mapStateToProps({ shows }){
     }
 }
 
-export default connect(mapStateToProps, { fetchTvShow, fetchSeasons, selectSeason })(TvShow)
+export default connect(mapStateToProps)(TvShow)

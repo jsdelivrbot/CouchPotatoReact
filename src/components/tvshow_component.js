@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { GridList, GridTile } from 'material-ui/GridList';
 import { Link } from 'react-router';
-import { DEFAULT_IMAGE } from '../constans';
+import { DEFAULT_IMAGE } from '../constants/constans';
 
 const styles = {
   root: {
@@ -42,7 +42,7 @@ class TvShowComponent extends Component{
         const { id, name, image } = show.show;
             return(
                 <GridTile
-                key = {id}
+                key = {show.id}
                 title = {name}
                 containerElement = { <Link to={`shows/${id}`}/> }
                 >

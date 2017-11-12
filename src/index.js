@@ -1,18 +1,25 @@
+import "babel-polyfill"
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { Router, browserHistory } from 'react-router';
-import ReduxPromise from 'redux-promise';
+import createSagaMiddleware from 'redux-saga';
 import { routes } from './routes';
+import rootSaga from './sagas/tvshow-sagas';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 
 import reducers from './reducers';
 
-const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
+const sagaMiddleware = createSagaMiddleware()
+export const store = createStore(reducers, applyMiddleware(sagaMiddleware));
+
+sagaMiddleware.run(rootSaga)
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
+  <Provider store= { store }>
     <MuiThemeProvider>
         <Router history = {browserHistory} routes = { routes } />
     </MuiThemeProvider>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {List, ListItem} from 'material-ui/List';
-import DEFAULT_IMAGE from '../constans';
+import DEFAULT_IMAGE from '../constants/constans';
 import Avatar from 'material-ui/Avatar';
 
 

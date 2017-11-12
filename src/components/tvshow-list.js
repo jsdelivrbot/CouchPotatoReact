@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchSchedule } from '../actions/index';
 import CircularProgress from 'material-ui/CircularProgress';
 import { Grid, Row, Cell } from 'react-inline-grid';
 import TvShowComponent from './tvshow_component';
+import { store } from '../index';
 
 
 
@@ -15,7 +15,7 @@ class TvShowList extends Component{
     }
 
     componentWillMount(){
-        this.props.fetchSchedule();
+        store.dispatch({ type: 'FETCH_SCHEDULE_REQUESTED'});
     }
 
 
@@ -52,4 +52,4 @@ function mapStateToProps({ shows }){
 
 
 
-export default connect(mapStateToProps, { fetchSchedule })(TvShowList)
+export default connect(mapStateToProps)(TvShowList)

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "axios": "^0.17.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-stage-1": "^6.1.18",
     "eslint-plugin-react": "^7.4.0",
     "lodash": "^3.10.1",
@@ -35,6 +36,7 @@
     "react-redux": "4.3.0",
     "react-router": "^2.8.1",
     "redux": "^3.0.4",
-    "redux-promise": "^0.5.3"
+    "redux-promise": "^0.5.3",
+    "redux-saga": "^0.16.0"
   }
 }
