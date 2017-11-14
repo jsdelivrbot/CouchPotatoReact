@@ -44,7 +44,7 @@ class TvShowComponent extends Component{
                 <GridTile
                 key = {show.id}
                 title = {name}
-                containerElement = { <Link to={`shows/${id}`}/> }
+                containerElement = { <Link to={`shows/${id}`} /> }
                 >
                 {image ? (
                     <img src={image.original} />

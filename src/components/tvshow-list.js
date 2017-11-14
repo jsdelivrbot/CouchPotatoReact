@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import { Grid, Row, Cell } from 'react-inline-grid';
 import TvShowComponent from './tvshow_component';
-import { store } from '../index';
+import { actionSchedule } from '../actions/actions'
 
 
 
@@ -15,7 +15,7 @@ class TvShowList extends Component{
     }
 
     componentWillMount(){
-        store.dispatch({ type: 'FETCH_SCHEDULE_REQUESTED'});
+        this.props.dispatch(actionSchedule())
     }
 
 

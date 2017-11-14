@@ -7,7 +7,7 @@ import { Grid, Row, Cell } from 'react-inline-grid'
 import { DEFAULT_IMAGE } from '../constants/constans.js'
 import EpisodeView from './episode-view';
 import _ from 'lodash';
-import { store } from '../index';
+import { actionTvShow, actionSeasons, actionSelectSeason } from '../actions/actions';
 
 const imageStyles = {
     height: '500px',
@@ -30,16 +30,16 @@ class TvShow extends Component{
     }
 
     componentWillMount(){
-        store.dispatch({ type: 'FETCH_TVSHOW_REQUESTED', id : this.props.params.id })
-        store.dispatch({ type: 'FETCH_SEASONS_REQUESTED',id : this.props.params.id })
+        this.props.dispatch( actionTvShow(this.props.params.id))
+        this.props.dispatch( actionSeasons(this.props.params.id))
     }
 
     updateSeasonChoice(id){
-        store.dispatch({ type: 'SELECT_SEASON_REQUESTED', id })
+        this.props.dispatch( actionSelectSeason(id) )
     }
 
     renderSeasonButtons(){
-        const keys = _.keys(this.props.shows.seasons)
+        const keys = _.keys(this.props.shows.seasons).filter((key) => this.props.shows.seasons[key].length !== 0)
         return keys.map((season) => {
             return(
                 <FlatButton label={season < 10 ? season + " " : season } style = {buttonStyles} key = { season } onClick = { (() => { this.updateSeasonChoice(season) }) } />
@@ -60,6 +60,7 @@ class TvShow extends Component{
         let summary = this.props.shows.activeTvShow.summary;
         summary = summary.replace(/(<([^>]+)>)/ig, "");
         return(
+            <div style = {{ height:'auto', maxHeight: '100vh', overflow: 'auto'}}>
             <Grid style= { gridStyle } >
                 <Row>
                     <Cell is="3 tablet-4 phone-2 offset-2">
@@ -67,9 +68,9 @@ class TvShow extends Component{
                         <CardMedia
                             overlay = {<CardTitle title = {name} subtitle={ <a href={`officialSite ? officialSite : ''`} style= {{textDecorationLine: 'none'}} > { officialSite} </a> } />}>
                             { image ? (
-                                <img src = {image.original} style = { imageStyles } />
+                                <img src = { image.original } style = { imageStyles } />
                             ) : (
-                                <img src = {DEFAULT_IMAGE} style = { imageStyles } />
+                                <img src = { DEFAULT_IMAGE } style = { imageStyles } />
                             )}
 
                         </CardMedia>
@@ -90,8 +91,7 @@ class TvShow extends Component{
                     </Cell>
                 </Row>
             </Grid>
-
-
+        </div>
         );
     }
 

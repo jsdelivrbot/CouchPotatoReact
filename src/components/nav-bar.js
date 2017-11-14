@@ -1,13 +1,59 @@
-import React from 'react';
+import React, { Component } from 'react';
 import AppBar from 'material-ui/AppBar';
+import IconMenu from 'material-ui/IconMenu';
+import FlatButton from 'material-ui/FlatButton';
+import MenuItem from 'material-ui/MenuItem';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import IconButton from 'material-ui/IconButton';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
 
-const NavBar = (props) => {
+
+class NavBar extends Component{
+
+    constructor(props){
+        super(props);
+    }
+
+    render(){
+        return(
+            <AppBar title="Couchpotato V2.0"
+            onLeftIconButtonTouchTap = { this.props.onToggle }
+            iconElementRight = { this.props.user.isLoggedIn ? <LoggedIn /> : <Login /> }>
+
+            </AppBar>
+        );
+    }
+}
+
+const Login = (props) => {
     return(
-        <AppBar title="Couchpotato V2.0"
-        iconClassNameRight="muidocs-icon-navigation-expand-more"
-        onLeftIconButtonTouchTap = { props.onToggle } />
+        <Link to="/login"><FlatButton { ...props } style = { { color: 'white' } } label="login" /></Link>
     );
 }
 
-export default NavBar;
+const LoggedIn = (props) => {
+    return(
+        <IconMenu
+            {...props}
+            iconButtonElement = { <IconButton> <MoreVertIcon /> </IconButton>}
+            targetOrigin = {{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin = {{ horizontal: 'right', vertical: 'top' }}
+            >
+                <MenuItem primaryText = "Favorites" />
+                <MenuItem primaryText = "Help" />
+                <MenuItem primaryText = "Something" />
+                <MenuItem primaryText = "Logout" />
+
+        </IconMenu>
+    );
+}
+
+function mapStateToProps({ user }){
+    return{
+        user
+    }
+}
+
+export default connect(mapStateToProps)(NavBar);

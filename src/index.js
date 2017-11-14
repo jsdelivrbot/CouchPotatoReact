@@ -1,5 +1,4 @@
 import "babel-polyfill"
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -15,7 +14,7 @@ import reducers from './reducers';
 
 const sagaMiddleware = createSagaMiddleware()
 export const store = createStore(reducers, applyMiddleware(sagaMiddleware));
-
+export const localStorage = window.localStorage;
 sagaMiddleware.run(rootSaga)
 
 ReactDOM.render(

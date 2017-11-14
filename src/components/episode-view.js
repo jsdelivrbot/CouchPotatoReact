@@ -8,7 +8,6 @@ class EpisodeView extends Component {
 
 
     render(){
-        console.log(this.props)
         const { episodeList } = this.props;
 
 

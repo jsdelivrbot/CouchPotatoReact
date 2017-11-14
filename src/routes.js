@@ -4,6 +4,7 @@ import App from './components/app';
 import TvShowList from './components/tvshow-list';
 import TvShow from './components/tv-show';
 import SearchTvShow from './components/search-tvshow';
+import LoginForm from './components/login-page';
 
 
 export const routes = (
@@ -12,6 +13,7 @@ export const routes = (
         <IndexRoute component = { TvShowList } />
         <Route path = "/shows/:id" component = { TvShow } />
         <Route path ="/search" component = { SearchTvShow } />
+        <Route path ="/login" component = { LoginForm } />
     </Route>
 
 );

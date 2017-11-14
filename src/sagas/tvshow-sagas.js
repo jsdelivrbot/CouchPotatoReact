@@ -1,13 +1,16 @@
-import { call, put, takeEvery, fork, all } from 'redux-saga/effects';
+import { call, put, takeEvery, all, takeLatest } from 'redux-saga/effects';
+import { TVSHOW_CONST, TVSHOW_REQUEST_CONST } from '../constants/actionTypes/actiontypes';
+import loginUser from './user-sagas';
 import axios from 'axios';
-const ROOT_URL = 'http://api.tvmaze.com/'
-const COUNTRY = 'us'
+import { localStorage } from '../index';
+const ROOT_URL = 'http://api.tvmaze.com/';
+const COUNTRY = 'us';
 
 function* fetchSchedule(){
     const SCHEDULE_URL = `${ROOT_URL}schedule?=${COUNTRY}`
     try{
         const data = yield call(axios.get, SCHEDULE_URL);
-        yield put({type: "FETCH_SCHEDULE", payload : data})
+        yield put({type: TVSHOW_CONST.FETCH_SCHEDULE, payload : data})
     }catch(error){
 
     }
@@ -17,7 +20,7 @@ function* fetchTvShow({ id }){
     const TVSHOW_URL = `${ROOT_URL}shows/${id}`
     try{
         const data = yield call(axios.get, TVSHOW_URL);
-        yield put({ type: "FETCH_TVSHOW", payload : data });
+        yield put({ type: TVSHOW_CONST.FETCH_TVSHOW, payload : data });
     }catch(error){
 
     }
@@ -27,34 +30,44 @@ function* fetchSeasons({ id }){
     const SEASONS_URL = `${ROOT_URL}shows/${id}/episodes`
     try{
         const data = yield call(axios.get, SEASONS_URL);
-        yield put({ type: "FETCH_SEASONS", payload : data })
+        yield put({ type: TVSHOW_CONST.FETCH_SEASONS, payload : data })
     }catch(error){
 
     }
 }
 
 function* selectSeason({ id }){
-    yield put({ type: "SELECT_SEASON", payload: id });
+    yield put({ type: TVSHOW_CONST.SELECT_SEASON, payload: id });
 }
 
 function* searchTvShow({ searchTerm }){
     const SEARCH_URL = `${ROOT_URL}search/shows?q=${searchTerm}`;
     try{
         const data = yield call(axios.get, SEARCH_URL);
-        yield put({ type: "SEARCH_TVSHOW", payload: data });
+        yield put({ type: TVSHOW_CONST.SEARCH_TVSHOW, payload: data });
     }catch(error){
 
+    }
+}
+
+function* authStatus(){
+    let user = localStorage.getItem('user');
+    user = JSON.parse(user);
+    if(user !== null){
+        yield put({ type: 'INITIAL_AUTH_OK', payload: user })
     }
 }
 
 
 export default function* rootSaga(){
     yield all([
-        takeEvery('FETCH_SCHEDULE_REQUESTED', fetchSchedule),
-        takeEvery('FETCH_TVSHOW_REQUESTED', fetchTvShow),
-        takeEvery('FETCH_SEASONS_REQUESTED', fetchSeasons),
-        takeEvery('SELECT_SEASON_REQUESTED', selectSeason),
-        takeEvery('SEARCH_TVSHOW_REQUESTED', searchTvShow)
-    ]);
+        takeEvery(TVSHOW_REQUEST_CONST.FETCH_SCHEDULE_REQUESTED, fetchSchedule),
+        takeLatest(TVSHOW_REQUEST_CONST.FETCH_TVSHOW_REQUESTED, fetchTvShow),
+        takeEvery(TVSHOW_REQUEST_CONST.FETCH_SEASONS_REQUESTED, fetchSeasons),
+        takeEvery(TVSHOW_REQUEST_CONST.SELECT_SEASON_REQUESTED, selectSeason),
+        takeEvery(TVSHOW_REQUEST_CONST.SEARCH_TVSHOW_REQUESTED, searchTvShow),
+        takeEvery('LOGIN_USER_REQUESTED', loginUser)
+    ]),
+    yield authStatus()
 
 }

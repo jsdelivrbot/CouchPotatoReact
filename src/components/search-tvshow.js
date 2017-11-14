@@ -4,7 +4,7 @@ import { Grid, Row, Cell } from 'react-inline-grid'
 import TextField from 'material-ui/TextField';
 import {orange500, blue500} from 'material-ui/styles/colors';
 import TvShowComponent from './tvshow_component';
-import { store } from '../index';
+import { actionSearchTvShow } from '../actions/actions'
 
 const LABEL_TEXT = "Search for a tvshow";
 
@@ -39,7 +39,7 @@ class SearchTvShow extends Component{
     onInputChanged(event, newValue){
         this.setState({ term: newValue });
         if(newValue.length > 3){
-            store.dispatch({ type: "SEARCH_TVSHOW_REQUESTED", searchTerm : newValue });
+            this.props.dispatch( actionSearchTvShow(newValue))
         }
     }
 
