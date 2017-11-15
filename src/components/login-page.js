@@ -5,18 +5,17 @@ import RaisedButton from 'material-ui/RaisedButton'
 import {
   TextField
 } from 'redux-form-material-ui';
-import { store } from '../index';
+import { loginSubmit } from '../actions/actions';
 
 
 
 class LoginForm extends Component{
 
-    onFormSubmit( values ){
-        store.dispatch({type: 'LOGIN_USER_REQUESTED', user: values})
+    onFormSubmit( { username, password } ){
+        this.props.dispatch(loginSubmit({ username, password }));
     }
 
     render(){
-        console.log(this.props);
         const { handleSubmit } = this.props;
         return (
             <div className="col-md-4 col-md-offset-4">
@@ -36,8 +35,25 @@ class LoginForm extends Component{
     }
 }
 
+function validate({ username, password }){
+
+    let errors = {}
+
+    if(!username){
+        errors['username'] = "Please fill in a username"
+    }
+
+    if(!password){
+        errors['password'] = "Cannot be empty"
+    }
+
+    return errors;
+
+}
+
 LoginForm = reduxForm({
-    form:'myForm'
+    form:'myForm',
+    validate
 })(LoginForm);
 
 export default connect()(LoginForm)

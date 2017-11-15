@@ -19,7 +19,9 @@ const DrawerContent = () => {
                 <Link to="/">
                     <ListItem primaryText="Home" leftIcon= {<ContentInbox />}/>
                 </Link>
-                <ListItem primaryText="Favorites" leftIcon={<ActionGrade />} />
+                <Link to="/favorites">
+                    <ListItem primaryText="Favorites" leftIcon={<ActionGrade />} />
+                </Link>
                 <Link to="/search">
                     <ListItem primaryText="Search" leftIcon={<ContentSend />} />
                 </Link>

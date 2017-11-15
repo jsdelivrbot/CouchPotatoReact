@@ -8,7 +8,7 @@ const INITIAL_STATE = {
     searchResult : []
 }
 
-export default function(state = INITIAL_STATE, action){
+export function tvshowReducer(state = INITIAL_STATE, action){
     switch(action.type){
         case types.FETCH_SCHEDULE:
             if(state.selectedSeason !== null){
@@ -45,3 +45,5 @@ export default function(state = INITIAL_STATE, action){
             return state
     }
 }
+
+export const findTvShow = (state, id) => state.shows.TvShows.find((tvshow) => { return tvshow.id === id })

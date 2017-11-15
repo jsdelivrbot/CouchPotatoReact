@@ -24,7 +24,7 @@ class TvShowList extends Component{
 
         if(TvShows.length === 0){
             return(
-                <div>
+                <div className="col-md-2 col-md-offset-6" style = {{ marginTop: '100px' }}>
                     <CircularProgress size = {80} thickness= {7} />
                 </div>
             );

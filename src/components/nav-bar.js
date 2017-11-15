@@ -7,6 +7,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconButton from 'material-ui/IconButton';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { logoutRequest } from '../actions/actions'
 
 
 
@@ -16,11 +17,15 @@ class NavBar extends Component{
         super(props);
     }
 
+    logout(){
+        this.props.dispatch(logoutRequest())
+    }
+
     render(){
         return(
             <AppBar title="Couchpotato V2.0"
             onLeftIconButtonTouchTap = { this.props.onToggle }
-            iconElementRight = { this.props.user.isLoggedIn ? <LoggedIn /> : <Login /> }>
+            iconElementRight = { this.props.user.isLoggedIn ? <LoggedIn logout = { this.logout.bind(this) } /> : <Login /> }>
 
             </AppBar>
         );
@@ -44,7 +49,7 @@ const LoggedIn = (props) => {
                 <MenuItem primaryText = "Favorites" />
                 <MenuItem primaryText = "Help" />
                 <MenuItem primaryText = "Something" />
-                <MenuItem primaryText = "Logout" />
+                <MenuItem primaryText = "Logout" onClick = { () => props.logout() } />
 
         </IconMenu>
     );

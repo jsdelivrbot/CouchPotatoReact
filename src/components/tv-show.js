@@ -3,11 +3,14 @@ import { connect } from 'react-redux';
 import { Card, CardActions, CardHeader, CardText, CardMedia, CardTitle } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import IconButton from 'material-ui/IconButton';
+import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import { Grid, Row, Cell } from 'react-inline-grid'
 import { DEFAULT_IMAGE } from '../constants/constans.js'
 import EpisodeView from './episode-view';
 import _ from 'lodash';
-import { actionTvShow, actionSeasons, actionSelectSeason } from '../actions/actions';
+import { actionTvShow, actionSeasons, actionSelectSeason, addFavorite } from '../actions/actions';
+import { findTvShow } from '../reducers/reducer_tvshows';
 
 const imageStyles = {
     height: '500px',
@@ -27,6 +30,7 @@ class TvShow extends Component{
         super(props);
 
         this.updateSeasonChoice = this.updateSeasonChoice.bind(this);
+        this.addFavorite = this.addFavorite.bind(this);
     }
 
     componentWillMount(){
@@ -39,7 +43,7 @@ class TvShow extends Component{
     }
 
     renderSeasonButtons(){
-        const keys = _.keys(this.props.shows.seasons).filter((key) => this.props.shows.seasons[key].length !== 0)
+        const keys = _.keys(this.props.state.shows.seasons).filter((key) => this.props.state.shows.seasons[key].length !== 0)
         return keys.map((season) => {
             return(
                 <FlatButton label={season < 10 ? season + " " : season } style = {buttonStyles} key = { season } onClick = { (() => { this.updateSeasonChoice(season) }) } />
@@ -47,17 +51,32 @@ class TvShow extends Component{
         });
     }
 
+    addFavorite(event){
+        // const favshow = this.props.state.shows.TvShows.find((tvshow) => {
+        //     console.log(tvshow)
+        // });
+        // console.log(this.props.state.shows)
+        // for(let i = 0; i < this.props.state.shows.TvShows.length; i++){
+        //     console.log(this.props.state.shows.TvShows[i]);
+        // }
+        // console.log(this.props.state.shows.activeTvShow);
+        // const foundTvShow = findTvShow(this.props.state, this.props.state.shows.activeTvShow.id);
+        // console.log(foundTvShow);
+        this.props.dispatch(addFavorite(this.props.state.shows.activeTvShow))
+    }
+
     render(){
-        if(!this.props.shows.activeTvShow || !this.props.shows.seasons){
+        const { shows } = this.props.state;
+        if(!shows.activeTvShow || !shows.seasons){
             return(
                 <div>
                     <CircularProgress />
                 </div>
             );
         }
-        const { name, status, image, officialSite } = this.props.shows.activeTvShow;
-        const { selectedSeason } = this.props.shows;
-        let summary = this.props.shows.activeTvShow.summary;
+        const { name, status, image, officialSite } = shows.activeTvShow;
+        const { selectedSeason } = shows;
+        let summary = shows.activeTvShow.summary;
         summary = summary.replace(/(<([^>]+)>)/ig, "");
         return(
             <div style = {{ height:'auto', maxHeight: '100vh', overflow: 'auto'}}>
@@ -66,7 +85,11 @@ class TvShow extends Component{
                     <Cell is="3 tablet-4 phone-2 offset-2">
                     <Card>
                         <CardMedia
-                            overlay = {<CardTitle title = {name} subtitle={ <a href={`officialSite ? officialSite : ''`} style= {{textDecorationLine: 'none'}} > { officialSite} </a> } />}>
+                            overlay = {<CardTitle title = {name}
+                            subtitle={ <a href={`officialSite ? officialSite : ''`}
+                            style= {{textDecorationLine: 'none'}} > { officialSite} </a> }/>}
+
+                            >
                             { image ? (
                                 <img src = { image.original } style = { imageStyles } />
                             ) : (
@@ -75,7 +98,7 @@ class TvShow extends Component{
 
                         </CardMedia>
                         <CardHeader title = {name} subtitle = {status} actAsExpander = {true} showExpandableButton = {true} />
-
+                            children = { <IconButton onClick = { (event) => this.addFavorite(event) }><StarBorder color="yellow" /></IconButton> }
                         <CardText expandable = {true}>
                             { summary }
                         </CardText>
@@ -98,9 +121,9 @@ class TvShow extends Component{
 }
 
 
-function mapStateToProps({ shows }){
+function mapStateToProps(state){
     return {
-        shows
+        state
     }
 }
 

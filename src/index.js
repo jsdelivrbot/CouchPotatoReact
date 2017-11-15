@@ -6,7 +6,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Router, browserHistory } from 'react-router';
 import createSagaMiddleware from 'redux-saga';
 import { routes } from './routes';
-import rootSaga from './sagas/tvshow-sagas';
+import rootSaga from './sagas/root-saga';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 

@@ -1,8 +1,7 @@
-import { call, put, takeEvery, all, takeLatest } from 'redux-saga/effects';
+import { call, put, takeEvery, takeLatest} from 'redux-saga/effects';
 import { TVSHOW_CONST, TVSHOW_REQUEST_CONST } from '../constants/actionTypes/actiontypes';
-import loginUser from './user-sagas';
 import axios from 'axios';
-import { localStorage } from '../index';
+// import { handleLoginSubmit, handleLoginRequest, handleLogoutRequest, initial_auth } from './auth-saga';
 const ROOT_URL = 'http://api.tvmaze.com/';
 const COUNTRY = 'us';
 
@@ -50,24 +49,12 @@ function* searchTvShow({ searchTerm }){
     }
 }
 
-function* authStatus(){
-    let user = localStorage.getItem('user');
-    user = JSON.parse(user);
-    if(user !== null){
-        yield put({ type: 'INITIAL_AUTH_OK', payload: user })
-    }
-}
 
 
-export default function* rootSaga(){
-    yield all([
+export const tvshowSagas = [
         takeEvery(TVSHOW_REQUEST_CONST.FETCH_SCHEDULE_REQUESTED, fetchSchedule),
         takeLatest(TVSHOW_REQUEST_CONST.FETCH_TVSHOW_REQUESTED, fetchTvShow),
         takeEvery(TVSHOW_REQUEST_CONST.FETCH_SEASONS_REQUESTED, fetchSeasons),
         takeEvery(TVSHOW_REQUEST_CONST.SELECT_SEASON_REQUESTED, selectSeason),
         takeEvery(TVSHOW_REQUEST_CONST.SEARCH_TVSHOW_REQUESTED, searchTvShow),
-        takeEvery('LOGIN_USER_REQUESTED', loginUser)
-    ]),
-    yield authStatus()
-
-}
+];

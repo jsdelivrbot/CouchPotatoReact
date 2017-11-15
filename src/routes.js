@@ -5,6 +5,7 @@ import TvShowList from './components/tvshow-list';
 import TvShow from './components/tv-show';
 import SearchTvShow from './components/search-tvshow';
 import LoginForm from './components/login-page';
+import FavoriteView from './components/favorite-view'
 
 
 export const routes = (
@@ -14,6 +15,7 @@ export const routes = (
         <Route path = "/shows/:id" component = { TvShow } />
         <Route path ="/search" component = { SearchTvShow } />
         <Route path ="/login" component = { LoginForm } />
+        <Route path ="/favorites" component = { FavoriteView } />
     </Route>
 
 );

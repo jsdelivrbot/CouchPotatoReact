@@ -1,4 +1,9 @@
-import { TVSHOW_REQUEST_CONST } from '../constants/actionTypes/actiontypes';
+import { TVSHOW_REQUEST_CONST, LOGIN_ACTIONS, FAVORITES } from '../constants/actionTypes/actiontypes';
+
+/*
+TVSHOW ACTIONS
+-----------------------------
+*/
 
 export function actionSchedule(){
     return{
@@ -31,5 +36,65 @@ export function actionSearchTvShow(searchTerm){
     return{
         type:TVSHOW_REQUEST_CONST.SEARCH_TVSHOW_REQUESTED,
         searchTerm
+    }
+}
+
+/*
+LOGIN ACTIONS
+-----------------------------
+*/
+
+export function loginSubmit(data){
+    return{
+        type:LOGIN_ACTIONS.LOGIN_SUBMIT,
+        payload:data
+    }
+}
+
+export function loginRequest(data){
+    return{
+        type:LOGIN_ACTIONS.LOGIN_REQUEST,
+        payload:data
+    }
+}
+
+export function loginError(error){
+    return{
+        type:LOGIN_ACTIONS.LOGIN_ERROR,
+        payload: error
+    }
+}
+
+export function loginSuccess(data){
+    return{
+        type:LOGIN_ACTIONS.LOGIN_SUCCESS,
+        payload:data
+    }
+}
+
+export function initialAuth(user){
+    return {
+        type: LOGIN_ACTIONS.INITIAL_AUTH,
+        payload:user
+
+    }
+}
+
+export function logoutRequest(){
+    return {
+        type: LOGIN_ACTIONS.LOGOUT_REQUESTED
+    }
+}
+
+export function logoutSuccessfull(){
+    return {
+        type: LOGIN_ACTIONS.LOGOUT_SUCCESS
+    }
+}
+
+export function addFavorite(id){
+    return{
+        type: FAVORITES.ADD_FAVORITE,
+        payload:id
     }
 }

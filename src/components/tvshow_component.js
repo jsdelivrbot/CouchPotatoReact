@@ -39,7 +39,7 @@ class TvShowComponent extends Component{
     }
 
     renderTile(show){
-        const { id, name, image } = show.show;
+        const { id, name, image } = show.show ? show.show : show;
             return(
                 <GridTile
                 key = {show.id}

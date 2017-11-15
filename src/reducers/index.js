@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux';
-import TvShowReducer from './reducer_tvshows';
-import UserReducer from './reducer_userstate';
+import { tvshowReducer } from './reducer_tvshows';
+import { user, auth } from './reducer_userstate';
 import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
+    user,
+    auth,
     form: formReducer,
-    shows: TvShowReducer,
-    user: UserReducer,
+    shows: tvshowReducer,
 });
 
 export default rootReducer;
